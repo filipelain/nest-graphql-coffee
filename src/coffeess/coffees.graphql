@@ -1,0 +1,103 @@
+"""
+Scalar Types
+used to create a new Type 
+"""
+scalar Date
+
+"""
+Interface 
+Help to implement Types
+"""
+interface Drink {
+    name: String!
+}
+
+"""
+ENUM
+"""
+enum CoffeeType {
+    ARABICA
+    ROBUSTA
+}
+
+
+"""
+Types 
+The Object how hold the value 
+"""
+
+type Tea implements Drink {
+   name: String!
+}
+
+type Coffee  implements Drink {
+    id: ID!
+    name: String!
+    brand: String!
+    flavors: [Flavor!]
+    createdAt: Date
+    type: CoffeeType
+}
+
+type Flavor {
+    id: ID!
+    name: String!
+}
+
+"""
+input 
+stucture like DTO for input data
+"""
+input createCoffeeInput{
+    name: String!
+    brand: String!
+    flavors: [String!]!
+    type: CoffeeType
+}
+input updateCoffeeInput{
+    name: String
+    brand: String
+    flavors: [String!]
+    type: CoffeeType
+}
+
+"""
+Union 
+force user to explicid require types of objecs 
+"""
+union DrinksResult = Coffee | Tea
+
+
+"""
+Type Query 
+Special type to handle with the queryies 
+and get information
+
+"""
+
+type Query {
+    coffees: [Coffee!]!
+    coffee(id: ID!): Coffee!
+    drinks: [DrinksResult!]!
+}
+"""
+Type Mutation 
+Special type to handle with the Mutations
+the tranformation of data like crete / update / delete 
+
+"""
+
+type Mutation {
+    createCoffee(createCoffeeInput: createCoffeeInput!):Coffee!
+    updateCoffee(id: ID! updateCoffeeInput: updateCoffeeInput!):Coffee!
+    removeCoffee(id:ID!):Coffee! 
+}
+
+"""
+type Subscription 
+a special type that possibility server to offer a event subscription 
+"""
+
+type Subscription{
+    coffeeAdded: Coffee!
+}
